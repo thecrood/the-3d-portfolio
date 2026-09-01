@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+:root {
+  --background: #38bdf8;
+  --foreground: #1c1917;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+}
+
+html,
+body {
+  background: #38bdf8;
+  color: #1c1917;
+  min-height: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Minecraft-Style Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1c1917;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4d7c0f;
+  border-radius: 2px;
+  border: 1px solid #65a30d;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #84cc16;
+  box-shadow: 0 0 8px rgba(132, 204, 22, 0.8);
+}
+
+/* Custom scrollbar for modals */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(28, 25, 23, 0.5);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(132, 204, 22, 0.5);
+  border-radius: 2px;
+}
