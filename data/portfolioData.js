@@ -38,8 +38,8 @@ export const PORTFOLIO_DATA = {
       badge: "STATION 01 • NORTH",
       itemIcon: "📦",
       lootTitle: "Starter Chest [Loot Unlocked]",
-      npcName: "Elder Steve",
-      npcSpeech: "Welcome, traveler! I've been expecting you. Open this chest to learn of the great architect who built this island.",
+      npcName: "Rohit Chaudhary",
+      npcSpeech: "Welcome, traveler! I'm Rohit. I've been expecting you. Open this chest to learn of the great architect who built this island.",
     },
     {
       id: 2,
@@ -55,8 +55,8 @@ export const PORTFOLIO_DATA = {
       badge: "STATION 02 • NORTHEAST",
       itemIcon: "📖",
       lootTitle: "Grimoire of WebGL Architecture",
-      npcName: "Wizard Bartholomew",
-      npcSpeech: "Ah, you seek knowledge! These bookshelves hold the forbidden secrets of GLSL shaders and 60fps sorcery.",
+      npcName: "Rohit Chaudhary",
+      npcSpeech: "Ah, you seek knowledge! These bookshelves hold the secret formulas of the code I've written over the years.",
     },
     {
       id: 3,
@@ -72,8 +72,8 @@ export const PORTFOLIO_DATA = {
       badge: "STATION 03 • SOUTHEAST",
       itemIcon: "🏆",
       lootTitle: "Vault of Past Guild Contracts",
-      npcName: "Guild Master Aria",
-      npcSpeech: "These trophy chests hold the records of every megacorp infiltrated and every web platform conquered. Impressive work.",
+      npcName: "Rohit Chaudhary",
+      npcSpeech: "These trophy chests hold the records of every complex system I've built and every technical challenge I've overcome. See for yourself.",
     },
     {
       id: 4,

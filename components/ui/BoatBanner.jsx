@@ -15,7 +15,7 @@ export default function BoatBanner({ playerPosition }) {
           animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: -30, scale: 0.9 }}
           transition={{ type: "spring", damping: 20, stiffness: 300 }}
-          className="fixed right-4 top-6 z-50 pointer-events-none"
+          className="fixed right-4 top-1/2 -translate-y-1/2 z-50 pointer-events-none"
         >
           <div className="pointer-events-auto flex items-center gap-3 rounded-2xl px-4 py-3 border-2 transition-all duration-300
             bg-gradient-to-r from-cyan-900/80 to-blue-900/80 border-cyan-300 shadow-[0_0_24px_rgba(34,211,238,0.6)]

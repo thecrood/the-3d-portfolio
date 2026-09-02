@@ -70,16 +70,29 @@ function StationStructure({ id }) {
 
 export default function CheckpointGate({ checkpoint, playerPosition }) {
   const y = useMemo(() => terrainSurfaceHeight(checkpoint.worldX, checkpoint.worldZ), [checkpoint]);
+  
+  // Calculate angle from station towards island center (0,0)
+  const rotationY = useMemo(() => {
+    return Math.atan2(checkpoint.worldX, checkpoint.worldZ);
+  }, [checkpoint]);
+
   const [isOpen, setIsOpen] = useState(false);
   const wasNear = useRef(false);
+  
   useFrame(() => {
     const near = Math.hypot(playerPosition.current.x - checkpoint.worldX, playerPosition.current.z - checkpoint.worldZ) < 5;
     if (near !== wasNear.current) { wasNear.current = near; setIsOpen(near); }
   });
-  return <group position={[checkpoint.worldX, y, checkpoint.worldZ]}>
-    <StationStructure id={checkpoint.id} />
-    <VoxelChest position={[0, 0, -2.25]} isOpen={isOpen} color={checkpoint.id === 5 ? "#312e81" : checkpoint.id === 2 ? "#1d4ed8" : "#854d0e"} />
-    <VoxelTorch position={[-2.7, 0, -2.4]} />
-    <VoxelTorch position={[2.7, 0, -2.4]} />
-  </group>;
+
+  return (
+    <group position={[checkpoint.worldX, y, checkpoint.worldZ]}>
+      {/* Rotate the structure to face the center (0,0) */}
+      <group rotation={[0, rotationY, 0]}>
+        <StationStructure id={checkpoint.id} />
+        <VoxelChest position={[0, 0, 2.25]} isOpen={isOpen} color={checkpoint.id === 5 ? "#312e81" : checkpoint.id === 2 ? "#1d4ed8" : "#854d0e"} />
+        <VoxelTorch position={[-2.7, 0, 2.4]} />
+        <VoxelTorch position={[2.7, 0, 2.4]} />
+      </group>
+    </group>
+  );
 }

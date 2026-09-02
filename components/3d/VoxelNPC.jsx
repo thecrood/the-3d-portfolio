@@ -43,10 +43,10 @@ export default function VoxelNPC({ station, playerPos }) {
     const t = performance.now() * 0.001;
 
     // Check proximity
-    const dx = playerPos.current.x - station.worldX;
-    const dz = playerPos.current.z - station.worldZ;
+    const dx = playerPos.current.x - (station.worldX);
+    const dz = playerPos.current.z - (station.worldZ - 3); 
     const dist = Math.sqrt(dx * dx + dz * dz);
-    const near = dist < 7;
+    const near = dist < 8; // Match your new interaction distance
 
     if (near !== isNearRef.current) {
       isNearRef.current = near;
@@ -55,8 +55,10 @@ export default function VoxelNPC({ station, playerPos }) {
 
     // Idle head bobbing and look toward player
     if (headRef.current) {
+      // Rotate to face player position
+      const targetAngle = Math.atan2(dx, dz) + Math.PI;
       headRef.current.rotation.y = near
-        ? THREE.MathUtils.lerp(headRef.current.rotation.y, Math.atan2(dx, dz) + Math.PI, delta * 4)
+        ? THREE.MathUtils.lerp(headRef.current.rotation.y, targetAngle, delta * 5)
         : Math.sin(t * 1.2) * 0.25;
     }
 
@@ -75,9 +77,14 @@ export default function VoxelNPC({ station, playerPos }) {
     }
   });
 
+  const dir = new THREE.Vector2(-station.worldX, -station.worldZ).normalize();
+  const npcX = station.worldX + dir.x * 4;
+  const npcZ = station.worldZ + dir.y * 4;
+
   return (
-    <group position={[station.worldX, terrainSurfaceHeight(station.worldX, station.worldZ - 3.5), station.worldZ - 3.5]} scale={1.25}>
+     <group position={[npcX, terrainSurfaceHeight(npcX, npcZ), npcZ]} rotation={[0, Math.atan2(dir.x, dir.y) + Math.PI, 0]} scale={1.25}>
       <group ref={npcRef}>
+        {/* Looking at the player logic in useFrame will handle the rotation towards the player */}
         {/* Speech Bubble */}
         <StationBanner station={station} visible={isNear} />
 

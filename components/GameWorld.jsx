@@ -87,10 +87,11 @@ function WorldScene({ onPlayerPosition, onNearbyStation, onSpeedUpdate, tourId =
     if (routeActive.current && !paused) {
       const station = PORTFOLIO_DATA.checkpoints[routeIndex.current];
       if (station) {
-        const target = new THREE.Vector3(station.worldX, 0, station.worldZ + 3.8);
+        const target = new THREE.Vector3(station.worldX, 0, station.worldZ);
+        
         direction.copy(target).sub(player.current).setY(0);
         const distance = direction.length();
-        if (distance < .8) {
+        if (distance < 6) {
           routeIndex.current += 1;
           onTourStation?.(station);
           if (routeIndex.current >= PORTFOLIO_DATA.checkpoints.length) routeActive.current = false;
@@ -107,11 +108,16 @@ function WorldScene({ onPlayerPosition, onNearbyStation, onSpeedUpdate, tourId =
       ? direction.normalize().multiplyScalar(maxSpeed)
       : new THREE.Vector3();
     // Smooth acceleration and deceleration with better interpolation
-    movementVelocity.current.lerp(targetVelocity, 1 - Math.exp(-delta * 8));
-    if (movementVelocity.current.lengthSq() < 0.00001) movementVelocity.current.set(0, 0, 0);
+    movementVelocity.current.lerp(targetVelocity, 1 - Math.exp(-delta * 20));
+    if (movementVelocity.current.lengthSq() < 0.0001) movementVelocity.current.set(0, 0, 0);
     player.current.x = THREE.MathUtils.clamp(player.current.x + movementVelocity.current.x * delta, -MAX_WORLD_COORDINATE, MAX_WORLD_COORDINATE);
     player.current.z = THREE.MathUtils.clamp(player.current.z + movementVelocity.current.z * delta, -MAX_WORLD_COORDINATE, MAX_WORLD_COORDINATE);
-    const groundY = terrainSurfaceHeight(player.current.x, player.current.z);
+    
+    // Smooth ground height transition
+    const targetGroundY = terrainSurfaceHeight(player.current.x, player.current.z);
+    // Directly use the target ground height to prevent conflicting physics updates
+    const groundY = targetGroundY;
+
     if (jumpVelocity.current !== 0 || jumpOffset.current > 0) {
       jumpVelocity.current -= 16 * delta;
       jumpOffset.current += jumpVelocity.current * delta;
@@ -121,6 +127,7 @@ function WorldScene({ onPlayerPosition, onNearbyStation, onSpeedUpdate, tourId =
       }
     }
     player.current.y = groundY + 0.08 + jumpOffset.current;
+    
     velocity.current = THREE.MathUtils.lerp(velocity.current, movementVelocity.current.length(), 1 - Math.exp(-delta * 6));
 
     const desiredCamera = player.current.clone().addScaledVector(forward, -7).add(new THREE.Vector3(0, 4.5, 0));
@@ -128,10 +135,17 @@ function WorldScene({ onPlayerPosition, onNearbyStation, onSpeedUpdate, tourId =
     camera.lookAt(player.current.clone().addScaledVector(forward, 5).add(new THREE.Vector3(0, 1.4, 0)));
 
     const closest = PORTFOLIO_DATA.checkpoints.reduce((best, station) => {
-      const distance = Math.hypot(player.current.x - station.worldX, player.current.z - station.worldZ);
+      // Calculate distance to the Station Gate
+      const distToGate = Math.hypot(player.current.x - station.worldX, player.current.z - station.worldZ);
+      // Calculate distance to the NPC (positioned at Z - 3)
+      const distToNPC = Math.hypot(player.current.x - station.worldX, player.current.z - (station.worldZ - 3));
+      
+      // Use the smaller of the two distances
+      const distance = Math.min(distToGate, distToNPC);
+      
       return !best || distance < best.distance ? { station, distance } : best;
     }, null);
-    const nextNearby = closest?.distance <= 5 ? closest.station : null;
+    const nextNearby = closest?.distance <= 7 ? closest.station : null;
     if (nearbyId.current !== nextNearby?.id) {
       nearbyId.current = nextNearby?.id ?? null;
       onNearbyStation?.(nextNearby);

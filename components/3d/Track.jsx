@@ -17,6 +17,13 @@ export function terrainHeight(x, z) {
 // Terrain is assembled from 2x2 voxel columns. Snap walkers to the same column
 // surface so their feet never interpolate into the sides of a block.
 export function terrainSurfaceHeight(x, z) {
+  // If we are in the lake, ALWAYS return water height (0.06).
+  // The 'floating' you saw on the edge was likely the terrain height
+  // function leaking into the lake area because of rounding.
+  if (Math.abs(x) < 9 && Math.abs(z) < 7) {
+    return 0.06;
+  }
+
   const voxelX = Math.round(x / 2) * 2;
   const voxelZ = Math.round(z / 2) * 2;
   return Math.max(0, terrainHeight(voxelX, voxelZ));
@@ -181,10 +188,10 @@ function VoxelBoat() {
   return <group position={[0, .15, 40]} rotation={[0, .35, 0]} scale={1.7}>
     <mesh position={[0, 0, 0]} castShadow><boxGeometry args={[6, .55, 2]} /><meshStandardMaterial color="#78350f" roughness={.9} /></mesh>
     <mesh position={[0, .35, 0]}><boxGeometry args={[4.8, .25, 1.5]} /><meshStandardMaterial color="#a16207" /></mesh>
-    <mesh position={[0, 1.8, 0]}><boxGeometry args={[.16, 3, .16]} /><meshStandardMaterial color="#451a03" /></mesh>
+    <mesh position={[0, 2.3, 0]}><boxGeometry args={[.16, 4.2, .16]} /><meshStandardMaterial color="#451a03" /></mesh>
     <mesh position={[.9, 2, 0]} rotation={[0, 0, -.08]}><planeGeometry args={[2.2, 2.4]} /><meshStandardMaterial color="#f8fafc" side={THREE.DoubleSide} /></mesh>
-    {/* Signal flag */}
-    <mesh position={[.75, 3.05, 0]} rotation={[0, 0, -.08]}><planeGeometry args={[1.25, .75]} /><meshStandardMaterial color="#ef4444" emissive="#ef4444" emissiveIntensity={.35} side={THREE.DoubleSide} /></mesh>
+    {/* Signal flag - positioned higher */}
+    <mesh position={[.75, 4.2, 0]} rotation={[0, 0, -.08]}><planeGeometry args={[1.25, .75]} /><meshStandardMaterial color="#ef4444" emissive="#ef4444" emissiveIntensity={.35} side={THREE.DoubleSide} /></mesh>
     <mesh position={[0, .95, 0]}><boxGeometry args={[1.8, .7, 1.2]} /><meshStandardMaterial color="#b45309" /></mesh>
     <mesh position={[0, 1.35, 0]}><boxGeometry args={[1.2, .22, 1]} /><meshStandardMaterial color="#facc15" /></mesh>
     {/* Waving deck passenger */}
