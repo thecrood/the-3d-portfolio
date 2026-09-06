@@ -458,8 +458,8 @@ export default function Overlays({ station, onClose, onOpenProject, onOpenContac
                         setSelectedSkillCategory(idx);
                       }}
                       className={`rounded-xl border-3 border-slate-950 px-4 py-2 text-xs font-black uppercase transition-all cursor-pointer ${selectedSkillCategory === idx
-                          ? "bg-amber-300 shadow-[4px_4px_0px_0px_#090d16] translate-x-[2px] translate-y-[2px]"
-                          : "bg-white shadow-[4px_4px_0px_0px_#090d16] hover:bg-amber-100 hover:translate-x-[2px] hover:translate-y-[2px]"
+                        ? "bg-amber-300 shadow-[4px_4px_0px_0px_#090d16] translate-x-[2px] translate-y-[2px]"
+                        : "bg-white shadow-[4px_4px_0px_0px_#090d16] hover:bg-amber-100 hover:translate-x-[2px] hover:translate-y-[2px]"
                         }`}
                     >
                       {cat.category}
@@ -592,7 +592,7 @@ export default function Overlays({ station, onClose, onOpenProject, onOpenContac
                       }}
                       className="flex-shrink-0 rounded-xl border-3 border-slate-950 bg-slate-950 px-6 py-3.5 text-xs font-black text-lime-300 shadow-[4px_4px_0px_0px_#ffffff] hover:bg-slate-900 hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[4px] active:translate-y-[4px] transition-all cursor-pointer uppercase"
                     >
-                      Parchement ↗
+                      Parchment ↗
                     </button>
                   </div>
                 </div>
