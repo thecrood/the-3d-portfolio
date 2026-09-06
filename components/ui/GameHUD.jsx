@@ -2,7 +2,9 @@
 
 import React from "react";
 import { Heart, Drumstick, Volume2, VolumeX, Disc3 } from "lucide-react";
-import { PORTFOLIO_DATA } from "@/data/portfolioData";
+
+// Visitor-facing tag shown in the HUD (not the island owner's name).
+const EXPLORER_NAME = "hey@visitor";
 
 export default function GameHUD({
   isMuted,
@@ -22,9 +24,9 @@ export default function GameHUD({
       <div className="flex items-start justify-between gap-3">
         {/* Player Status & Health in Neo-Brutalist Style */}
         <div className="rounded-xl border-3 border-slate-950 bg-[#fdfbf7] p-3 shadow-[4px_4px_0px_0px_#090d16] text-slate-950 sm:w-64">
-          <div className="flex items-center justify-between mb-1.5">
-            <span className="text-[10px] font-black uppercase text-slate-950 tracking-wider">
-              {PORTFOLIO_DATA.profile.handle}
+          <div className="flex items-center justify-between mb-1.5 min-w-0">
+            <span className="text-[10px] font-black uppercase text-slate-950 tracking-wider truncate" title={EXPLORER_NAME}>
+              {EXPLORER_NAME}
             </span>
             <span className="rounded border border-slate-950 bg-emerald-300 px-1.5 py-0.2 text-[9px] font-black uppercase">
               {isMoving ? "SPRINT" : "IDLE"}

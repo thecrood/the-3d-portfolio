@@ -52,6 +52,22 @@ function WorldScene({
 
   useEffect(() => {
     const down = (event) => {
+      // Ignore game controls while the user is typing in a form field
+      // (e.g. the "Parchment" contact form) so letters like W/A/S/D and
+      // space are not stolen by the movement/jump handlers.
+      const target = event.target;
+      const isTyping =
+        target instanceof HTMLElement &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable ||
+          target.closest?.("input, textarea, [contenteditable='true']"));
+
+      if (isTyping) {
+        keys.current.delete(event.code);
+        return;
+      }
+
       if (["KeyW", "KeyA", "KeyS", "KeyD"].includes(event.code)) {
         event.preventDefault();
         keys.current.add(event.code);

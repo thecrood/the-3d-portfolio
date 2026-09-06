@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, ArrowRight, ExternalLink, Sparkles, Terminal, Award, Mail, Phone, Cpu, FolderGit2, GraduationCap, Heart, FileText, Check, Copy } from "lucide-react";
+import { X, ArrowRight, ExternalLink, Sparkles, Terminal, Award, Mail, Phone, Cpu, FolderGit2, GraduationCap, Heart, FileText, Check, Copy, Camera } from "lucide-react";
 import { PORTFOLIO_DATA } from "@/data/portfolioData";
 import { soundFX } from "@/utils/soundFX";
 
@@ -310,6 +310,16 @@ export default function Overlays({ station, onClose, onOpenProject, onOpenContac
                   >
                     <FolderGit2 className="h-4 w-4" />
                     <span>GITHUB ↗</span>
+                  </a>
+
+                  <a
+                    href={PORTFOLIO_DATA.profile.socials.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 rounded-xl border-3 border-slate-950 bg-rose-200 px-5 py-3 text-xs sm:text-sm font-black text-slate-950 shadow-[4px_4px_0px_0px_#090d16] hover:bg-rose-300 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#090d16] transition-all cursor-pointer"
+                  >
+                    <Camera className="h-4 w-4" />
+                    <span>INSTAGRAM ↗</span>
                   </a>
                 </div>
               </div>

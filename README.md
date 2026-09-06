@@ -1,5 +1,30 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## 📬 EmailJS Contact Form
+
+The "Send a Parchment Letter" contact form is powered by [EmailJS](https://www.emailjs.com) via `@emailjs/browser`.
+
+### Setup
+
+1. Copy `.env.example` → `.env.local` and fill in your EmailJS credentials:
+
+   ```env
+   NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id
+   NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
+   NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
+   ```
+
+   - **Service ID** → EmailJS dashboard → *Email Services* tab
+   - **Template ID** → EmailJS dashboard → *Email Templates* tab
+   - **Public Key** → EmailJS dashboard → *Account → General* (formerly API Key)
+
+2. Make sure the variable names in your EmailJS template match the params sent from the form:
+   `from_name`, `reply_to`, `message`, `to_name`. (Adjust the keys in `components/ui/ProjectModal.jsx` if your template uses different names.)
+
+3. For deployments (e.g. Vercel), add the three **`NEXT_PUBLIC_`** variables in your hosting platform's environment settings.
+
+> ⚠️ `.env.local` is gitignored — never commit it. The public key is safe to expose in the browser by design.
+
 ## Getting Started
 
 First, run the development server:

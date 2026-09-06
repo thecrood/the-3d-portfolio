@@ -21,7 +21,7 @@ export const PORTFOLIO_DATA = {
       email: "thetuesday96@gmail.com",
       phone: "+91-8988449288",
     },
-    resumeUrl: "/Rohit_Chaudhary_Resume.pdf",
+    resumeUrl: "https://drive.google.com/file/d/1NfeBrYG8vQnm4hwCbAVkuewv5gzsZ9Od/view?usp=sharing",
     education: {
       degree: "Bachelor of Technology in Computer Science and Engineering",
       institution: "Indus International University, School of Computer Science & Engineering",

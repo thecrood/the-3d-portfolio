@@ -2,23 +2,51 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ExternalLink, CheckCircle2, Send, Sparkles, BookOpen, Code2, Terminal, ArrowRight } from "lucide-react";
+import { X, ExternalLink, CheckCircle2, Send, Sparkles, BookOpen, Code2, Terminal, ArrowRight, Loader2 } from "lucide-react";
 import { soundFX } from "@/utils/soundFX";
+import emailjs from "@emailjs/browser";
 
 export default function ProjectModal({ project, isOpen, onClose }) {
   const [formSent, setFormSent] = useState(false);
+  const [formSending, setFormSending] = useState(false);
+  const [formError, setFormError] = useState("");
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     soundFX.playChestOpen();
-    setFormSent(true);
-    setTimeout(() => {
-      setFormSent(false);
-      if (onClose) onClose();
-    }, 2400);
+    setFormError("");
+    setFormSending(true);
+
+    try {
+      // Params must match the variable names used inside your EmailJS template.
+      // Adjust keys below if your template uses different names (e.g. user_name).
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          reply_to: formData.email,
+          message: formData.message,
+          to_name: "Rohit", // recipient name used by your template
+        },
+        { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }
+      );
+
+      setFormSending(false);
+      setFormSent(true);
+      setTimeout(() => {
+        setFormSent(false);
+        setFormData({ name: "", email: "", message: "" });
+        if (onClose) onClose();
+      }, 2400);
+    } catch (err) {
+      console.error("EmailJS transmission failed:", err);
+      setFormSending(false);
+      setFormError(err?.text || err?.message || "Unknown transmission error");
+    }
   };
 
   return (
@@ -196,6 +224,17 @@ export default function ProjectModal({ project, isOpen, onClose }) {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-4">
+                    {/* Transmission Error Banner */}
+                    {formError && (
+                      <div className="rounded-xl border-3 border-slate-950 bg-rose-300 p-4 shadow-[4px_4px_0px_0px_#090d16] flex items-center gap-2.5 text-xs font-black text-slate-950">
+                        <span className="text-base">⚠️</span>
+                        <span>
+                          TRANSMISSION FAILED: <span className="normal-case">“{formError}”</span>{" "}
+                          — please retry, or write directly to thetuesday96@gmail.com.
+                        </span>
+                      </div>
+                    )}
+
                     <div>
                       <label className="block text-xs font-black uppercase text-slate-950 mb-1.5">
                         RECRUITER / SENDER NAME & ORGANIZATION
@@ -240,10 +279,20 @@ export default function ProjectModal({ project, isOpen, onClose }) {
 
                     <button
                       type="submit"
-                      className="w-full flex items-center justify-center gap-2 rounded-xl border-3 border-slate-950 bg-emerald-300 py-3.5 text-xs sm:text-sm font-black text-slate-950 shadow-[5px_5px_0px_0px_#090d16] hover:bg-emerald-400 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[3px_3px_0px_0px_#090d16] active:translate-x-[5px] active:translate-y-[5px] active:shadow-none transition-all cursor-pointer uppercase"
+                      disabled={formSending}
+                      className="w-full flex items-center justify-center gap-2 rounded-xl border-3 border-slate-950 bg-emerald-300 py-3.5 text-xs sm:text-sm font-black text-slate-950 shadow-[5px_5px_0px_0px_#090d16] hover:bg-emerald-400 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[3px_3px_0px_0px_#090d16] active:translate-x-[5px] active:translate-y-[5px] active:shadow-none transition-all cursor-pointer uppercase disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[5px_5px_0px_0px_#090d16]"
                     >
-                      <Send className="h-4 w-4 stroke-[2.5]" />
-                      <span>DISPATCH PARCHMENT ↗</span>
+                      {formSending ? (
+                        <>
+                          <Loader2 className="h-4 w-4 stroke-[2.5] animate-spin" />
+                          <span>TRANSMITTING…</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send className="h-4 w-4 stroke-[2.5]" />
+                          <span>DISPATCH PARCHMENT ↗</span>
+                        </>
+                      )}
                     </button>
                   </form>
                 )}

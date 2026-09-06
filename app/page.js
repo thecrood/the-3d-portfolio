@@ -116,8 +116,8 @@ export default function Home() {
         return;
       }
 
-      // Interact with 'E'
-      if (isInteractKey && !openStation && !isJukeboxOpen) {
+      // Interact with 'E' (skipped while typing in a form field)
+      if (isInteractKey && !event.target.matches("input, textarea, [contenteditable='true']") && !openStation && !isJukeboxOpen) {
         if (isNearJukeboxRef.current && !nearbyStationRef.current) {
           event.preventDefault();
           setIsJukeboxOpen(true);
