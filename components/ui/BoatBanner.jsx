@@ -11,29 +11,26 @@ export default function BoatBanner({ playerPosition }) {
     <AnimatePresence>
       {isOnBoat && (
         <motion.div
-          initial={{ opacity: 0, x: -30, scale: 0.9 }}
+          initial={{ opacity: 0, x: -30, scale: 0.92 }}
           animate={{ opacity: 1, x: 0, scale: 1 }}
-          exit={{ opacity: 0, x: -30, scale: 0.9 }}
+          exit={{ opacity: 0, x: -30, scale: 0.92 }}
           transition={{ type: "spring", damping: 20, stiffness: 300 }}
-          className="fixed right-4 top-1/2 -translate-y-1/2 z-50 pointer-events-none"
+          className="fixed right-4 top-1/2 -translate-y-1/2 z-50 pointer-events-none font-mono"
         >
-          <div className="pointer-events-auto flex items-center gap-3 rounded-2xl px-4 py-3 border-2 transition-all duration-300
-            bg-gradient-to-r from-cyan-900/80 to-blue-900/80 border-cyan-300 shadow-[0_0_24px_rgba(34,211,238,0.6)]
-            hover:shadow-[0_0_32px_rgba(34,211,238,0.8)] hover:scale-105 cursor-default">
-            
-            {/* Boat Icon */}
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg text-lg flex-shrink-0
-              bg-cyan-500/40 border-2 border-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.6)]">
+          {/* NEO-BRUTALIST VOYAGE BANNER */}
+          <div className="pointer-events-auto flex items-center gap-3 rounded-xl border-3 border-slate-950 bg-sky-200 px-4 py-3 shadow-[5px_5px_0px_0px_#090d16] text-slate-950">
+            {/* Anchor Badge */}
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-slate-950 bg-white text-lg flex-shrink-0 shadow-[2px_2px_0px_0px_#090d16]">
               ⚓
             </div>
 
-            {/* Boat Banner Text */}
+            {/* Banner Text */}
             <div className="text-left">
-              <div className="text-xs font-bold uppercase tracking-widest text-cyan-300">
-                ⛵ Voyage Started
+              <div className="text-[10px] font-black uppercase tracking-widest text-sky-950">
+                STATUS // VOYAGE_ACTIVE
               </div>
-              <div className="text-sm font-semibold text-cyan-100">
-                Explore the island
+              <div className="text-xs font-black text-slate-950">
+                Explore the Island Stations
               </div>
             </div>
           </div>

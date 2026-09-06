@@ -4,19 +4,18 @@ import { PORTFOLIO_DATA } from "@/data/portfolioData";
 import { CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Minecraft-style icons for each station
 const STATION_ICONS = {
-  1: "📦", // Spawn Chest
-  2: "📖", // Enchanting Altar
-  3: "🏆", // Trophy Vault
-  4: "🛠️", // Crafting Forge
-  5: "🔮", // Nether Portal
+  1: "📦",
+  2: "📖",
+  3: "🏆",
+  4: "🛠️",
+  5: "🔮",
 };
 
 export default function StationTracker({ currentStation, visitedStations = [], onStationClick }) {
   return (
     <AnimatePresence>
-      <div className="pointer-events-none fixed left-4 top-1/2 z-30 -translate-y-1/2 flex flex-col gap-2 font-mono sm:left-6">
+      <div className="pointer-events-none fixed left-4 top-1/2 z-30 -translate-y-1/2 flex flex-col gap-2.5 font-mono sm:left-6 select-none">
         {PORTFOLIO_DATA.checkpoints.map((station, index) => {
           const isVisited = visitedStations.includes(station.id);
           const isCurrent = currentStation?.id === station.id;
@@ -25,25 +24,33 @@ export default function StationTracker({ currentStation, visitedStations = [], o
           return (
             <motion.div
               key={station.id}
-              initial={{ opacity: 0, x: -50 }}
+              initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
+              exit={{ opacity: 0, x: -30 }}
               transition={{ delay: index * 0.05 }}
               onClick={() => onStationClick?.(station)}
-              className={`rounded-lg border px-3 py-2 backdrop-blur transition-all text-xs flex items-center gap-2 cursor-pointer pointer-events-auto hover:scale-105 ${
+              className={`rounded-xl border-3 border-slate-950 px-3 py-2 text-xs flex items-center gap-2.5 cursor-pointer pointer-events-auto transition-all ${
                 isCurrent
-                  ? "border-lime-400 bg-lime-400/20 text-lime-100"
+                  ? "bg-emerald-300 text-slate-950 shadow-[4px_4px_0px_0px_#090d16] translate-x-[2px] translate-y-[2px]"
                   : isVisited
-                    ? "border-green-400/60 bg-green-400/10 text-white/80"
-                    : "border-white/15 bg-white/5 text-white/50"
+                    ? "bg-purple-100 text-slate-950 shadow-[4px_4px_0px_0px_#090d16] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#090d16]"
+                    : "bg-white text-slate-800 shadow-[4px_4px_0px_0px_#090d16] hover:bg-amber-50 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#090d16]"
               }`}
             >
-              <span className="text-sm">{icon}</span>
-              <div>
-                <p className="font-bold">{station.level}</p>
-                <p className="text-[10px]">{station.title}</p>
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-slate-950 bg-white text-sm shadow-[1px_1px_0px_0px_#090d16] flex-shrink-0">
+                {icon}
+              </span>
+              <div className="text-left">
+                <p className="font-black text-[10px] uppercase tracking-wider text-slate-900 leading-none">
+                  STATION {station.level}
+                </p>
+                <p className="text-[11px] font-black text-slate-950 truncate max-w-[120px] mt-0.5">
+                  {station.title}
+                </p>
               </div>
-              {isVisited && <CheckCircle2 className="h-3 w-3 text-green-400 ml-auto flex-shrink-0" />}
+              {isVisited && (
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 ml-auto flex-shrink-0 stroke-[2.5]" />
+              )}
             </motion.div>
           );
         })}

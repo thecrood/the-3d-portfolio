@@ -1,21 +1,56 @@
 "use client";
 
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Disc3, Sparkles } from "lucide-react";
 
-export default function InteractionPrompt({ station, onInteract }) {
+export default function InteractionPrompt({ station, isNearJukebox, onInteractStation, onInteractJukebox }) {
+  const showPrompt = Boolean(station || isNearJukebox);
+
   return (
     <AnimatePresence>
-      {station && (
+      {showPrompt && (
         <motion.div
-          initial={{ opacity: 0, y: -12 }}
+          initial={{ opacity: 0, y: -14 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -12 }}
-          className="fixed top-6 left-1/2 z-50 -translate-x-1/2 font-mono"
+          exit={{ opacity: 0, y: -14 }}
+          className="fixed top-6 left-1/2 z-50 -translate-x-1/2 font-mono select-none"
         >
-          <div className="rounded-xl border border-amber-200/70 bg-black/70 px-4 py-2 text-center shadow-2xl backdrop-blur-md">
-            <div className="text-xs font-bold uppercase tracking-[0.16em] text-amber-200">{station.title}</div>
-            <button type="button" onClick={onInteract} className="mt-1 text-sm font-extrabold text-white"><kbd className="rounded bg-white/20 px-1.5 py-0.5 text-lime-300">E</kbd> Open Chest</button>
-          </div>
+          {isNearJukebox && !station ? (
+            <div className="rounded-xl border-3 border-slate-950 bg-amber-300 px-5 py-2.5 text-center shadow-[5px_5px_0px_0px_#090d16]">
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-950 flex items-center justify-center gap-1.5">
+                <Disc3 className="h-3.5 w-3.5 text-slate-950" />
+                <span>SYSTEM // VOXEL_JUKEBOX</span>
+              </div>
+              <button
+                type="button"
+                onClick={onInteractJukebox}
+                className="mt-1 flex items-center justify-center gap-2 text-xs sm:text-sm font-black text-slate-950 cursor-pointer hover:underline"
+              >
+                <kbd className="rounded border-2 border-slate-950 bg-white px-2 py-0.5 text-slate-950 shadow-[2px_2px_0px_0px_#090d16]">
+                  J
+                </kbd>
+                <span>USE JUKEBOX (MUSIC DISCS) ↗</span>
+              </button>
+            </div>
+          ) : station ? (
+            <div className="rounded-xl border-3 border-slate-950 bg-emerald-200 px-5 py-2.5 text-center shadow-[5px_5px_0px_0px_#090d16]">
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-950 flex items-center justify-center gap-1">
+                <Sparkles className="h-3 w-3 text-slate-950" />
+                <span>{station.title.toUpperCase()}</span>
+              </div>
+              <button
+                type="button"
+                onClick={onInteractStation}
+                className="mt-1 flex items-center justify-center gap-2 text-xs sm:text-sm font-black text-slate-950 cursor-pointer hover:underline"
+              >
+                <kbd className="rounded border-2 border-slate-950 bg-white px-2 py-0.5 text-slate-950 shadow-[2px_2px_0px_0px_#090d16]">
+                  E
+                </kbd>
+                <span>OPEN RELIC CHEST ↗</span>
+              </button>
+            </div>
+          ) : null}
         </motion.div>
       )}
     </AnimatePresence>

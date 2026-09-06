@@ -9,10 +9,23 @@ import VoxelIsland, { terrainSurfaceHeight } from "./3d/Track";
 import CheckpointGate from "./3d/CheckpointGate";
 import EnvironmentFX from "./3d/EnvironmentFX";
 import VoxelNPC from "./3d/VoxelNPC";
+import VoxelJukebox from "./3d/VoxelJukebox";
+import { soundFX } from "@/utils/soundFX";
 
 const MAX_WORLD_COORDINATE = 33;
 
-function WorldScene({ onPlayerPosition, onNearbyStation, onSpeedUpdate, tourId = 0, paused = false, onTourStation }) {
+function WorldScene({
+  onPlayerPosition,
+  onNearbyStation,
+  onSpeedUpdate,
+  tourId = 0,
+  paused = false,
+  onTourStation,
+  onOpenJukebox,
+  isPlayingJukebox = false,
+  currentDisc = null,
+  onNearJukebox,
+}) {
   const { camera, gl } = useThree();
   const player = useRef(new THREE.Vector3(0, 1.2, 40));
   const keys = useRef(new Set());
@@ -28,6 +41,7 @@ function WorldScene({ onPlayerPosition, onNearbyStation, onSpeedUpdate, tourId =
   const lastPublished = useRef(0);
   const routeIndex = useRef(0);
   const routeActive = useRef(false);
+  const lastFootstep = useRef(0);
 
   useEffect(() => {
     if (tourId) {
@@ -130,6 +144,14 @@ function WorldScene({ onPlayerPosition, onNearbyStation, onSpeedUpdate, tourId =
     
     velocity.current = THREE.MathUtils.lerp(velocity.current, movementVelocity.current.length(), 1 - Math.exp(-delta * 6));
 
+    if (velocity.current > 1.2 && jumpOffset.current <= 0.05) {
+      const now = performance.now();
+      if (now - lastFootstep.current > 380) {
+        lastFootstep.current = now;
+        soundFX.playFootstep();
+      }
+    }
+
     const desiredCamera = player.current.clone().addScaledVector(forward, -7).add(new THREE.Vector3(0, 4.5, 0));
     camera.position.lerp(desiredCamera, 1 - Math.exp(-delta * 5));
     camera.lookAt(player.current.clone().addScaledVector(forward, 5).add(new THREE.Vector3(0, 1.4, 0)));
@@ -163,6 +185,14 @@ function WorldScene({ onPlayerPosition, onNearbyStation, onSpeedUpdate, tourId =
     <VoxelIsland />
     {PORTFOLIO_DATA.checkpoints.map((station) => <CheckpointGate key={station.id} checkpoint={station} playerPosition={player} />)}
     {PORTFOLIO_DATA.checkpoints.map((station) => <VoxelNPC key={`npc-${station.id}`} station={station} playerPos={player} />)}
+    <VoxelJukebox
+      position={[4, 0, 34]}
+      playerPosition={player}
+      onOpenJukebox={onOpenJukebox}
+      isPlaying={isPlayingJukebox}
+      currentDisc={currentDisc}
+      onNearJukebox={onNearJukebox}
+    />
     <VoxelCharacter playerRef={player} velocityRef={velocity} facingRef={yaw} />
   </>;
 }
