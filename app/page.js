@@ -14,6 +14,7 @@ import StationTracker from "@/components/ui/StationTracker";
 import BoatBanner from "@/components/ui/BoatBanner";
 import JukeboxModal from "@/components/ui/JukeboxModal";
 import NowPlayingToast from "@/components/ui/NowPlayingToast";
+import TetrisIntro from "@/components/ui/TetrisIntro";
 
 const GameWorld = dynamic(() => import("@/components/GameWorld"), {
   ssr: false,
@@ -37,6 +38,7 @@ export default function Home() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [tourId, setTourId] = useState(0);
   const [visitedStations, setVisitedStations] = useState([]);
+  const [started, setStarted] = useState(false); // Tetris intro blocks must land before the island is revealed
 
   // Jukebox State
   const [isJukeboxOpen, setIsJukeboxOpen] = useState(false);
@@ -187,9 +189,20 @@ export default function Home() {
     }
   }, [visitedStations]);
 
+  // Called when the player presses PLAY on the Tetris intro. Runs inside the
+  // click gesture, so the browser autoplay policy is satisfied and audio starts.
+  const handleStart = useCallback(() => {
+    soundFX.startExperienceAudio();
+    setAudioStarted(true);
+    setIsMuted(soundFX.isMuted);
+    setIsPlayingDisc(soundFX.isPlayingDisc);
+    setStarted(true);
+  }, []);
+
   return (
     <main className="relative min-h-dvh overflow-hidden bg-sky-400 text-white font-sans">
-      {/* 3D Voxel World Scene */}
+      {/* 3D Voxel World Scene — mounted behind the intro so the island loads while the Tetris blocks fall */}
+      <div className={`transition-opacity duration-1000 ${started ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
       <GameWorld
         onPlayerPosition={setPlayerPosition}
         onNearbyStation={setNearbyStation}
@@ -202,7 +215,13 @@ export default function Home() {
         currentDisc={currentDisc}
         onNearJukebox={setIsNearJukebox}
       />
+      </div>
 
+      {/* Tetris intro — blocks fall from the top of the screen to form the PLAY button & island character */}
+      {!started && <TetrisIntro onStart={handleStart} />}
+
+      {started && (
+        <>
       {/* Primary HUD with Jukebox Now Playing Widget */}
       <GameHUD
         speed={speed}
@@ -296,6 +315,8 @@ export default function Home() {
         onTogglePlay={handleTogglePlay}
         onEject={handleEjectDisc}
       />
+        </>
+      )}
     </main>
   );
 }

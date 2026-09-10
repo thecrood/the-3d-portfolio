@@ -52,3 +52,164 @@ body {
   background: rgba(132, 204, 22, 0.5);
   border-radius: 2px;
 }
+
+/* ============================================================
+   TETRIS INTRO — falling voxel blocks form the PLAY button
+   and the island explorer character (matches Vehicle.jsx look)
+   ============================================================ */
+
+.tetris-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow-y: auto;
+  font-family: var(--font-mono), monospace;
+  background-image:
+    linear-gradient(180deg, #7dd3fc 0%, #38bdf8 48%, #a5d8f3 78%, #bae6fd 100%),
+    linear-gradient(45deg, rgba(9, 13, 22, 0.05) 25%, transparent 25%, transparent 75%, rgba(9, 13, 22, 0.05) 75%),
+    linear-gradient(45deg, rgba(9, 13, 22, 0.05) 25%, transparent 25%, transparent 75%, rgba(9, 13, 22, 0.05) 75%);
+  background-size:
+    100% 100%,
+    64px 64px,
+    64px 64px;
+  background-position:
+    0 0,
+    0 0,
+    32px 32px;
+}
+
+.tetris-intro.is-leaving {
+  animation: intro-fade-out 0.6s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes intro-fade-out {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: scale(1.06); }
+}
+
+/* Blinking block cursor next to the title */
+.tetris-cursor {
+  animation: cursor-blink 1s steps(2, end) infinite;
+}
+@keyframes cursor-blink {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* ---- falling voxel blocks ---- */
+.pk-grid {
+  position: relative;
+}
+
+.pk-part {
+  position: absolute;
+}
+
+.pk-block {
+  position: absolute;
+  width: var(--cell);
+  height: var(--cell);
+  animation: tetris-fall 0.7s cubic-bezier(0.45, 0.04, 0.8, 0.42) var(--fall-delay) both;
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.28);
+}
+
+.pk-blink {
+  animation:
+    tetris-fall 0.7s cubic-bezier(0.45, 0.04, 0.8, 0.42) var(--fall-delay) both,
+    blink-eyes 3.6s 2.4s infinite;
+}
+
+@keyframes tetris-fall {
+  0%  { transform: translateY(-130vh); }
+  68% { transform: translateY(0); }
+  78% { transform: translateY(5px); }
+  87% { transform: translateY(-3px); }
+  93% { transform: translateY(2px); }
+  100%{ transform: translateY(0); }
+}
+
+@keyframes blink-eyes {
+  0%, 92%, 100% { opacity: 1; }
+  94% { opacity: 0.04; }
+  96% { opacity: 1; }
+}
+
+/* ---- island character idle animation (walking in place) ---- */
+.pk-idle .pk-part-head     { animation: char-head-idle 2.9s ease-in-out infinite; transform-origin: 50% 100%; }
+.pk-idle .pk-part-torso    { animation: char-bob-idle 2.9s ease-in-out infinite; }
+.pk-idle .pk-part-leftArm  { animation: arm-swing-idle 1.7s ease-in-out infinite; transform-origin: 50% 12%; }
+.pk-idle .pk-part-rightArm { animation: arm-swing-idle 1.7s ease-in-out 0.85s infinite; transform-origin: 50% 12%; }
+.pk-idle .pk-part-leftLeg  { animation: leg-swing-idle 1.7s ease-in-out 0.85s infinite; transform-origin: 50% 0%; }
+.pk-idle .pk-part-rightLeg { animation: leg-swing-idle 1.7s ease-in-out infinite; transform-origin: 50% 0%; }
+
+@keyframes char-head-idle {
+  0%, 100% { transform: rotate(-4deg); }
+  50%      { transform: rotate(4deg); }
+}
+@keyframes char-bob-idle {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(calc(var(--cell) * -0.4)); }
+}
+@keyframes arm-swing-idle {
+  0%, 100% { transform: rotate(8deg); }
+  50%      { transform: rotate(-8deg); }
+}
+@keyframes leg-swing-idle {
+  0%, 100% { transform: rotate(-7deg); }
+  50%      { transform: rotate(7deg); }
+}
+
+/* ---- PLAY button ---- */
+.play-button {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: default;
+  /* Center the block letterforms inside the button */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.play-button.is-ready {
+  cursor: pointer;
+  animation: play-pulse 1.15s ease-in-out infinite;
+}
+.play-button:focus-visible {
+  outline: 3px solid #090d16;
+  outline-offset: 4px;
+}
+.play-button.is-ready:hover .pk-block {
+  filter: brightness(1.12);
+}
+
+@keyframes play-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(9, 13, 22, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(9, 13, 22, 0.18);
+  }
+}
+
+/* ---- ambient tetromino ghosts flowing down the screen ---- */
+.tetris-ghost {
+  position: absolute;
+  opacity: 0.12;
+  animation: ghost-fall 10s linear infinite;
+  pointer-events: none;
+}
+.ghost-cell {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: #090d16;
+  border-radius: 2px;
+}
+@keyframes ghost-fall {
+  from { transform: translateY(-160px); }
+  to   { transform: translateY(calc(100vh + 220px)); }
+}
