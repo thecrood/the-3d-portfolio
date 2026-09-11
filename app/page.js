@@ -15,6 +15,7 @@ import BoatBanner from "@/components/ui/BoatBanner";
 import JukeboxModal from "@/components/ui/JukeboxModal";
 import NowPlayingToast from "@/components/ui/NowPlayingToast";
 import TetrisIntro from "@/components/ui/TetrisIntro";
+import VirtualControls from "@/components/ui/VirtualControls";
 
 const GameWorld = dynamic(() => import("@/components/GameWorld"), {
   ssr: false,
@@ -29,6 +30,7 @@ const GameWorld = dynamic(() => import("@/components/GameWorld"), {
 
 export default function Home() {
   const [playerPosition, setPlayerPosition] = useState({ x: 0, z: 40, yaw: 0 });
+  const touchRef = useRef({ stick: [0, 0], jump: false }); // mobile virtual controls
   const [nearbyStation, setNearbyStation] = useState(null);
   const [openStation, setOpenStation] = useState(null);
   const [speed, setSpeed] = useState(0);
@@ -214,6 +216,7 @@ export default function Home() {
         isPlayingJukebox={isPlayingDisc}
         currentDisc={currentDisc}
         onNearJukebox={setIsNearJukebox}
+        touchRef={touchRef}
       />
       </div>
 
@@ -241,6 +244,9 @@ export default function Home() {
         visitedStations={visitedStations}
         onStationClick={handleStationClick}
       />
+
+      {/* Touch joystick + jump for mobile devices (auto-hidden on desktop) */}
+      <VirtualControls touchRef={touchRef} />
 
       {/* Contextual Interaction Prompts (Station Chest vs Jukebox) */}
       <InteractionPrompt
@@ -272,18 +278,19 @@ export default function Home() {
         </div>
       )}
 
-      {/* Guided Route CTA Button in Neo-Brutalist Style */}
-      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 z-40 pointer-events-none sm:bottom-20">
+      {/* Guided Route CTA Button in Neo-Brutalist Style — left side just above virtual controls on mobile */}
+      <div className="pointer-events-none fixed left-3 bottom-[140px] z-40 sm:left-1/2 sm:-translate-x-1/2 sm:bottom-20">
         <button
           onClick={() => {
             setOpenStation(null);
             setIsJukeboxOpen(false);
             setTourId((id) => id + 1);
           }}
-          className="pointer-events-auto flex items-center gap-2 justify-center rounded-xl border-3 border-slate-950 bg-lime-300 px-5 py-2.5 text-xs sm:text-sm font-black text-slate-950 shadow-[5px_5px_0px_0px_#090d16] hover:bg-lime-400 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[3px_3px_0px_0px_#090d16] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all cursor-pointer uppercase font-mono whitespace-nowrap"
+          className="pointer-events-auto flex items-center gap-2 justify-center rounded-xl border-3 border-slate-950 bg-lime-300 px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-black text-slate-950 shadow-[5px_5px_0px_0px_#090d16] hover:bg-lime-400 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[3px_3px_0px_0px_#090d16] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all cursor-pointer uppercase font-mono whitespace-nowrap"
         >
-          <Pickaxe className="h-4 w-4 stroke-[2.5]" />
-          <span>Start Guided Portfolio Route ↗</span>
+          <Pickaxe className="h-4 w-4 stroke-[2.5] flex-shrink-0" />
+          <span className="min-[500px]:hidden">Route Guide</span>
+          <span className="hidden min-[500px]:inline">Start Guided Portfolio Route ↗</span>
         </button>
       </div>
 

@@ -264,10 +264,10 @@ export default function TetrisIntro({ onStart }) {
         </div>
       ))}
 
-      <div className="flex min-h-full flex-col items-center gap-5 px-4 py-6 select-none">
+      <div className="flex h-full max-h-full flex-col items-center justify-center gap-3 px-4 py-4 sm:gap-5 sm:py-6 select-none overflow-hidden">
         {/* Flexible spacers keep the stack vertically centered when it fits, and
             scroll from the top instead of clipping when the screen is short. */}
-        <div className="flex-1 basis-0" />
+        <div className="flex-1 basis-0 min-h-0" />
 
         {/* Brand */}
         <div className="text-center">
@@ -302,7 +302,7 @@ export default function TetrisIntro({ onStart }) {
           style={{
             width: `calc(var(--cell) * ${PLAY_COLS})`,
             height: `calc(var(--cell) * ${PLAY_ROWS})`,
-            "--cell": `max(10px, min(20px, calc((100vh - 660px) / ${PLAY_ROWS}), calc((100vw - 96px) / ${PLAY_COLS})))`,
+            "--cell": `clamp(min(12px, max(0px, calc((100vh - 560px) / ${PLAY_ROWS})), calc((100vw - 56px) / ${PLAY_COLS})), 6px, 12px)`,
           }}
           onClick={handlePlay}
         >
@@ -314,10 +314,10 @@ export default function TetrisIntro({ onStart }) {
         <p className="font-mono text-[10px] font-black uppercase tracking-widest sm:text-xs">
           {landed ? "■ world ready — press explore to enter" : "▣ assembling voxels…"}
         </p>
-         <p className="font-mono text-[10px] font-black uppercase tracking-widest sm:text-xs">
+         <p className="hidden sm:block font-mono text-[10px] font-black uppercase tracking-widest sm:text-xs">
           {landed ? "or space key" : ""}
         </p>
-        <div className="flex-1 basis-0" />
+        <div className="flex-1 basis-0 min-h-0" />
       </div>
     </div>
   );

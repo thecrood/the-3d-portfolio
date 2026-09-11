@@ -62,7 +62,8 @@ body {
   position: fixed;
   inset: 0;
   z-index: 60;
-  overflow-y: auto;
+  overflow: hidden;
+  height: 100dvh;
   font-family: var(--font-mono), monospace;
   background-image:
     linear-gradient(180deg, #7dd3fc 0%, #38bdf8 48%, #a5d8f3 78%, #bae6fd 100%),

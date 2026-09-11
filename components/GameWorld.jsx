@@ -25,6 +25,7 @@ function WorldScene({
   isPlayingJukebox = false,
   currentDisc = null,
   onNearJukebox,
+  touchRef,
 }) {
   const { camera, gl } = useThree();
   const player = useRef(new THREE.Vector3(0, 1.2, 40));
@@ -114,6 +115,21 @@ function WorldScene({
     if (keys.current.has("KeyS")) direction.sub(forward);
     if (keys.current.has("KeyD")) direction.add(right);
     if (keys.current.has("KeyA")) direction.sub(right);
+
+    // Touch joystick (mobile): x = strafe (+right), y = forward (+up)
+    const stick = touchRef?.current?.stick || [0, 0];
+    const [stickX, stickY] = stick;
+    if (!routeActive.current && (stickX !== 0 || stickY !== 0)) {
+      direction.addScaledVector(right, stickX);
+      direction.addScaledVector(forward, stickY);
+    }
+
+    // Touch jump button (mobile): consume one-shot per press
+    if (touchRef?.current?.jump && jumpOffset.current <= 0) {
+      jumpVelocity.current = 6.2;
+      touchRef.current.jump = false;
+    }
+
     if (routeActive.current && !paused) {
       const station = PORTFOLIO_DATA.checkpoints[routeIndex.current];
       if (station) {
@@ -134,8 +150,11 @@ function WorldScene({
       }
     }
     const maxSpeed = routeActive.current ? 5 : 8;
+    // Analog joystick scales speed by stick magnitude; keyboard uses full speed
+    const stickMag = Math.hypot(stickX, stickY);
+    const speedScale = stickMag > 0.01 ? stickMag : 1;
     const targetVelocity = direction.lengthSq() > 0
-      ? direction.normalize().multiplyScalar(maxSpeed)
+      ? direction.normalize().multiplyScalar(maxSpeed * speedScale)
       : new THREE.Vector3();
     // Smooth acceleration and deceleration with better interpolation
     movementVelocity.current.lerp(targetVelocity, 1 - Math.exp(-delta * 20));

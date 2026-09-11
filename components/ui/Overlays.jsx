@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, ArrowRight, ExternalLink, Sparkles, Terminal, Award, Mail, Phone, Cpu, FolderGit2, GraduationCap, Heart, FileText, Check, Copy, Camera } from "lucide-react";
+import { X, ArrowRight, ExternalLink, Sparkles, Terminal, Award, Mail, Phone, Cpu, FolderGit2, GraduationCap, Heart, FileText, Check, Copy, Camera, Server, Database, Workflow, Activity } from "lucide-react";
 import { PORTFOLIO_DATA } from "@/data/portfolioData";
 import { soundFX } from "@/utils/soundFX";
 
@@ -72,6 +72,14 @@ export default function Overlays({ station, onClose, onOpenProject, onOpenContac
   };
 
   const theme = stationThemes[station.id] || stationThemes[1];
+
+  // Icon lookup for engineering core module cards
+  const engIcons = {
+    server: Server,
+    database: Database,
+    workflow: Workflow,
+    activity: Activity,
+  };
 
   return (
     <AnimatePresence>
@@ -279,7 +287,7 @@ export default function Overlays({ station, onClose, onOpenProject, onOpenContac
                     className="flex items-center gap-2 rounded-xl border-3 border-slate-950 bg-emerald-300 px-5 py-3 text-xs sm:text-sm font-black text-slate-950 shadow-[5px_5px_0px_0px_#090d16] hover:bg-emerald-400 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[3px_3px_0px_0px_#090d16] active:translate-x-[5px] active:translate-y-[5px] active:shadow-none transition-all cursor-pointer"
                   >
                     <Mail className="h-4 w-4 stroke-[2.5]" />
-                    <span>CONTACT ROHIT ↗</span>
+                    <span>PARCHMENT ROHIT ↗</span>
                   </button>
 
                   <a
@@ -343,7 +351,7 @@ export default function Overlays({ station, onClose, onOpenProject, onOpenContac
                 </div>
 
                 <div className="space-y-3 font-mono">
-                  {PORTFOLIO_DATA.skillCategories[0].skills.map((skill, idx) => (
+                  {(PORTFOLIO_DATA.skillCategories.find((cat) => cat.category.includes("Agentic AI"))?.skills || []).map((skill, idx) => (
                     <div
                       key={idx}
                       className="rounded-xl border-3 border-slate-950 bg-white p-4 shadow-[4px_4px_0px_0px_#090d16]"
@@ -370,6 +378,67 @@ export default function Overlays({ station, onClose, onOpenProject, onOpenContac
                       </p>
                     </div>
                   ))}
+                </div>
+
+                {/* Engineering Core Modules */}
+                <div className="pt-2 border-t-2 border-slate-950">
+                  <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
+                    <h4 className="font-mono text-xs font-black uppercase tracking-wider text-slate-950 flex items-center gap-1.5">
+                      <Cpu className="h-4 w-4 text-sky-600" />
+                      <span>ENGINEERING CORE MODULES</span>
+                    </h4>
+                    <span className="rounded border-2 border-slate-950 bg-sky-200 px-2 py-0.5 text-[10px] font-black uppercase shadow-[2px_2px_0px_0px_#090d16]">
+                      4 PRODUCTION-GRADE SPECIALTIES
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono">
+                    {PORTFOLIO_DATA.engineeringHighlights.map((mod, idx) => {
+                      const IconComp = engIcons[mod.icon] || Cpu;
+                      return (
+                        <div
+                          key={idx}
+                          className="rounded-xl border-3 border-slate-950 bg-white p-4 shadow-[4px_4px_0px_0px_#090d16] hover:bg-sky-50 transition-colors"
+                        >
+                          <div className="flex items-center justify-between mb-1.5">
+                            <div className="flex items-center gap-2">
+                              <span className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-slate-950 bg-sky-200 shadow-[2px_2px_0px_0px_#090d16]">
+                                <IconComp className="h-4 w-4" />
+                              </span>
+                              <span className="text-sm sm:text-base font-black text-slate-950 leading-tight">
+                                {mod.title}
+                              </span>
+                            </div>
+                            <span className="rounded border-2 border-slate-950 bg-sky-200 px-2 py-0.5 text-[10px] font-black shadow-[2px_2px_0px_0px_#090d16]">
+                              {mod.tag} · {mod.level}%
+                            </span>
+                          </div>
+
+                          <div className="h-3 w-full rounded border-2 border-slate-950 bg-slate-100 overflow-hidden my-1.5">
+                            <div
+                              className="h-full bg-sky-400 border-r-2 border-slate-950"
+                              style={{ width: `${mod.level}%` }}
+                            />
+                          </div>
+
+                          <p className="text-xs font-sans text-slate-700 font-medium">
+                            {mod.desc}
+                          </p>
+
+                          <div className="mt-3 flex flex-wrap gap-1.5">
+                            {mod.points.map((point, pIdx) => (
+                              <span
+                                key={pIdx}
+                                className="rounded border-2 border-slate-950 bg-sky-100 px-2 py-0.5 text-[10px] font-bold text-slate-950"
+                              >
+                                {point}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             )}

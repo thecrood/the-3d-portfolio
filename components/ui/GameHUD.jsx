@@ -4,7 +4,7 @@ import React from "react";
 import { Heart, Drumstick, Volume2, VolumeX, Disc3 } from "lucide-react";
 
 // Visitor-facing tag shown in the HUD (not the island owner's name).
-const EXPLORER_NAME = "hey@visitor";
+const EXPLORER_NAME = "hey@explorer"
 
 export default function GameHUD({
   isMuted,
@@ -90,8 +90,8 @@ export default function GameHUD({
         </div>
       </div>
 
-      {/* Bottom Controls Legend */}
-      <div className="mx-auto rounded-xl border-3 border-slate-950 bg-[#fdfbf7] px-4 py-2 text-center text-[10px] font-black text-slate-950 shadow-[4px_4px_0px_0px_#090d16] sm:text-xs">
+      {/* Bottom Controls Legend — desktop keyboard hints */}
+      <div className="mx-auto hidden rounded-xl border-3 border-slate-950 bg-[#fdfbf7] px-4 py-2 text-center text-[10px] font-black text-slate-950 shadow-[4px_4px_0px_0px_#090d16] sm:block sm:text-xs">
         <span className="rounded bg-emerald-200 border border-slate-950 px-1 py-0.5">WASD</span> WALK · <span className="rounded bg-emerald-200 border border-slate-950 px-1 py-0.5">SPACE</span> JUMP · <span className="rounded bg-sky-200 border border-slate-950 px-1 py-0.5">DRAG</span> LOOK · <span className="rounded bg-amber-200 border border-slate-950 px-1 py-0.5">E</span> INTERACT · <span className="rounded bg-amber-200 border border-slate-950 px-1 py-0.5">J</span> JUKEBOX
       </div>
     </div>

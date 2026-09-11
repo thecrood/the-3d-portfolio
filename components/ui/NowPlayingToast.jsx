@@ -40,12 +40,12 @@ export default function NowPlayingToast({ currentDisc, isPlaying }) {
             </div>
 
             {/* Banner text */}
-            <div className="text-left">
-              <div className="text-[11px] font-black uppercase tracking-widest flex items-center gap-1.5 text-slate-950">
-                <span>NOW PLAYING //</span>
-                <span>{currentDisc.artist} - {currentDisc.title}</span>
+            <div className="text-left min-w-0">
+              <div className="text-[11px] font-black uppercase tracking-widest flex items-center gap-1.5 text-slate-950 min-w-0">
+                <span className="flex-shrink-0">NOW PLAYING //</span>
+                <span className="truncate max-w-[150px] sm:max-w-[280px]">{currentDisc.artist} - {currentDisc.title}</span>
               </div>
-              <div className="text-[10px] font-bold text-slate-700">
+              <div className="text-[10px] font-bold text-slate-700 truncate max-w-[220px] sm:max-w-[340px]">
                 {currentDisc.mood}
               </div>
             </div>
