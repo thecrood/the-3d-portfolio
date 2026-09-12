@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Rohit // Minecraft 3D Voxel Web Portfolio",
+  title: "Rohit // Minecraft 3D Voxel Portfolio",
   description:
     "Interactive 3D Minecraft voxel adventure portfolio featuring a walking voxel character, opening 3D chests, crafting tables, and 60fps creative engineering.",
 };
