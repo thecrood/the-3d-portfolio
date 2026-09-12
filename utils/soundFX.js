@@ -114,10 +114,10 @@ class SoundFXManager {
     // Start ambient birds and ocean shoreline
     this.startAmbientNature();
 
-    // Auto-play the opening peaceful track (Erik Satie's Gymnopédie No. 1)
+    // Auto-play a random track from the full disc collection on every page load
     if (!this.isPlayingDisc) {
-      const openingTrack = MUSIC_DISCS[0]; // Gymnopédie No. 1
-      this.playMusicDisc(openingTrack.id);
+      const randomDisc = MUSIC_DISCS[Math.floor(Math.random() * MUSIC_DISCS.length)];
+      this.playMusicDisc(randomDisc.id);
     }
   }
 

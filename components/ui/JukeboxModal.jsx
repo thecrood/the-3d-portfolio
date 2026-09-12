@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Disc3, Play, Pause, Square, Volume2, VolumeX, X, Sparkles, Music, Upload, ArrowUpRight } from "lucide-react";
+import { Disc3, Play, Pause, Square, Volume2, VolumeX, X, Music, Upload } from "lucide-react";
 import { MUSIC_DISCS } from "@/data/musicDiscs";
 import { soundFX } from "@/utils/soundFX";
 

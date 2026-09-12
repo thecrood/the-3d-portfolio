@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ExternalLink, CheckCircle2, Send, Sparkles, BookOpen, Code2, Terminal, ArrowRight, Loader2 } from "lucide-react";
+import { X, ExternalLink, CheckCircle2, Send, Sparkles, BookOpen, Code2, Terminal, Loader2 } from "lucide-react";
 import { soundFX } from "@/utils/soundFX";
 import emailjs from "@emailjs/browser";
 

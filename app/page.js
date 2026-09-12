@@ -44,7 +44,7 @@ export default function Home() {
 
   // Jukebox State
   const [isJukeboxOpen, setIsJukeboxOpen] = useState(false);
-  const [currentDisc, setCurrentDisc] = useState(MUSIC_DISCS[0]); // Erik Satie - Gymnopédie No. 1
+  const [currentDisc, setCurrentDisc] = useState(() => MUSIC_DISCS[Math.floor(Math.random() * MUSIC_DISCS.length)]);
   const [isPlayingDisc, setIsPlayingDisc] = useState(false);
   const [isNearJukebox, setIsNearJukebox] = useState(false);
 

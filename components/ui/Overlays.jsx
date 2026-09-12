@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, ArrowRight, ExternalLink, Sparkles, Terminal, Award, Mail, Phone, Cpu, FolderGit2, GraduationCap, Heart, FileText, Check, Copy, Camera, Server, Database, Workflow, Activity } from "lucide-react";
+import { X, ArrowRight, ExternalLink, Terminal, Award, Mail, Phone, Cpu, FolderGit2, GraduationCap, Heart, FileText, Copy, Camera, Server, Database, Workflow, Activity } from "lucide-react";
 import { PORTFOLIO_DATA } from "@/data/portfolioData";
 import { soundFX } from "@/utils/soundFX";
 

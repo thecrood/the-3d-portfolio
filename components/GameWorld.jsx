@@ -31,7 +31,6 @@ function WorldScene({
   const player = useRef(new THREE.Vector3(0, 1.2, 40));
   const keys = useRef(new Set());
   const yaw = useRef(0);
-  const targetYaw = useRef(0);
   const dragging = useRef(false);
   const lastPointerX = useRef(0);
   const nearbyId = useRef(null);
@@ -234,8 +233,12 @@ function WorldScene({
 
 export default function GameWorld(props) {
   return <div className="fixed inset-0 z-0 h-full w-full touch-none">
-    <Canvas shadows="percentage" camera={{ position: [0, 5, 27], fov: 55, near: 0.1, far: 250 }} dpr={[1, 1.5]}
-      gl={{ antialias: true, powerPreference: "high-performance", toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.15 }}>
+    <Canvas
+      shadows="percentage"
+      camera={{ position: [0, 5, 27], fov: 55, near: 0.1, far: 250 }}
+      dpr={[1, 1.5]}
+      gl={{ antialias: true, powerPreference: "high-performance", toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.15 }}
+    >
       <WorldScene {...props} />
     </Canvas>
   </div>;
