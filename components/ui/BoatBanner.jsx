@@ -24,13 +24,15 @@ export default function BoatBanner({ playerPosition }) {
               ⚓
             </div>
 
-            {/* Banner Text — short labels only */}
+            {/* Banner Text — short labels on mobile, full labels on bigger screens */}
             <div className="text-left">
               <div className="text-[10px] font-black uppercase tracking-widest text-sky-950">
-                VOYAGE_ACTIVE
+                <span className="sm:hidden">VOYAGE_ACTIVE</span>
+                <span className="hidden sm:inline">STATUS // VOYAGE_ACTIVE</span>
               </div>
               <div className="text-xs font-black uppercase text-slate-950">
-                Explore Island
+                <span className="sm:hidden">Explore Island</span>
+                <span className="hidden sm:inline">Explore the Island Stations</span>
               </div>
             </div>
           </div>
